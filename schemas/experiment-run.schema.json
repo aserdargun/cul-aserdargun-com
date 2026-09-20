@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cul:experiment-run:1.0",
+  "title": "CUL ExperimentRun export, top-level contract",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "scenario",
+    "strategy",
+    "faults",
+    "initialState",
+    "environment",
+    "status",
+    "events",
+    "steps",
+    "retries",
+    "recoveries"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "id": { "type": "string" },
+    "scenario": { "type": "object", "required": ["id", "goal", "recovery"] },
+    "strategy": { "enum": ["coordinate", "semantic"] },
+    "faults": { "type": "object", "required": ["enabled", "permanentBlock", "missingLabel"] },
+    "initialState": { "type": "object", "required": ["version", "records"] },
+    "environment": { "type": "object", "required": ["version", "records"] },
+    "status": {
+      "enum": [
+        "ready",
+        "observing",
+        "targeting",
+        "action-ready",
+        "awaiting-approval",
+        "acting",
+        "verifying",
+        "recovering",
+        "completed",
+        "blocked",
+        "failed",
+        "handed-off"
+      ]
+    },
+    "steps": { "type": "integer", "minimum": 0 },
+    "retries": { "type": "integer", "minimum": 0 },
+    "recoveries": { "type": "integer", "minimum": 0 },
+    "events": {
+      "type": "array",
+      "items": { "type": "object", "required": ["seq", "code", "status", "version"] }
+    },
+    "exportNote": { "type": "string" }
+  }
+}
