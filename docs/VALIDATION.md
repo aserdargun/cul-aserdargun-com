@@ -1,4 +1,4 @@
-# Local verification — 2026-09-20
+# Local verification before Azure deployment — 2026-09-20
 
 Verified on macOS with Node 22.23.1. App: `http://127.0.0.1:8036`. Production-build smoke: `http://127.0.0.1:8037` (temporary test server, stopped after the tests).
 
@@ -74,4 +74,4 @@ npm start
 - No real model, screenshot understanding, OCR, desktop control, external accounts or field integrations.
 - Coordinate observations are a synthetic scene model; verifications use labelled internal state.
 - Session data is memory-only. Exports are downloadable but not imported or persisted automatically.
-- No production publish, DNS/TLS/domain verification or neighbouring repository changes. The intended domain is only a plan.
+- This earlier local-validation run did not include production publication or domain verification. The subsequent Azure release workflow is documented in [DEPLOYMENT.md](DEPLOYMENT.md). The custom domain remains a plan, and no neighbouring repositories were changed.

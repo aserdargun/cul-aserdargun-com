@@ -43,4 +43,4 @@ User data is synthetic. Canonical task labels and stable field keys never change
 
 `schemaVersion: "1.0"` exports the complete ExperimentRun: scenario definition, public goal, strategy, fault configuration, initial environment, current environment, events, observations, proposals, action results, verification and approval. `exportNote` describes synthetic provenance. `schemas/experiment-run.schema.json` gives the top-level contract; TypeScript is the detailed in-process contract.
 
-`npm run build` emits static `dist/`, with bundled fonts and no runtime external dependencies. No production deployment, DNS edits, integration with neighbouring projects, telemetry, storage backend or external account access is implemented.
+`npm run build` emits static `dist/`, with bundled fonts and no runtime external dependencies. The GitHub Actions workflow validates and deploys this static artifact to a Free Azure Static Web App, then verifies the live commit and browser flows. There are no DNS edits, integrations with neighbouring projects, telemetry, storage backend or external account access. See DEPLOYMENT.md.

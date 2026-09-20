@@ -169,8 +169,8 @@ const words = {
     'HNS: harness research · ARL: agent runtime loop · DPL: decision paths · CUL: interface actions · SEC: permissions · EVL: evaluation. These are conceptual relationships, with no connected services or data integration.',
   ],
   domain: [
-    'Planlanan alan adı: cul.aserdargun.com · Üretim yayını yapılmadı',
-    'Planned domain: cul.aserdargun.com · Not deployed to production',
+    'Planlanan özel alan adı: cul.aserdargun.com · Henüz bağlı değil',
+    'Planned custom domain: cul.aserdargun.com · Not connected yet',
   ],
   coordinates: ['Mantıksal ortam: 640 × 480 · Ölçek', 'Logical environment: 640 × 480 · Scale'],
   scroll: ['Kaydırma', 'Scroll'],

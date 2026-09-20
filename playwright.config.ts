@@ -1,6 +1,7 @@
 import { defineConfig } from '@playwright/test';
 const preview = process.env.CUL_PREVIEW === '1';
-const baseURL = `http://127.0.0.1:${preview ? 8037 : 8036}`;
+const remoteURL = process.env.CUL_BASE_URL;
+const baseURL = remoteURL || `http://127.0.0.1:${preview ? 8037 : 8036}`;
 export default defineConfig({
   testDir: './tests',
   testMatch: '**/*.spec.ts',
@@ -15,9 +16,11 @@ export default defineConfig({
     headless: true,
     screenshot: 'only-on-failure',
   },
-  webServer: {
-    command: preview ? 'npm run preview' : 'npm run dev',
-    url: baseURL,
-    reuseExistingServer: !preview,
-  },
+  webServer: remoteURL
+    ? undefined
+    : {
+        command: preview ? 'npm run preview' : 'npm run dev',
+        url: baseURL,
+        reuseExistingServer: !preview,
+      },
 });

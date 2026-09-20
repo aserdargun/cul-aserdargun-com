@@ -227,7 +227,7 @@ test('keyboard editing works and cold load has no external dependency or console
     if (e.type() === 'error') errors.push(e.text());
   });
   page.on('request', (r) => {
-    if (!r.url().startsWith('http://127.0.0.1:8036') && !r.url().startsWith('data:'))
+    if (!r.url().startsWith(new URL(page.url()).origin + '/') && !r.url().startsWith('data:'))
       external.push(r.url());
   });
   await page.reload();
