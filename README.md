@@ -4,7 +4,7 @@
 
 Bilgisayar Kullanımı Laboratuvarı: React + TypeScript ile TR/EN, tarayıcı içinde çalışan kontrollü ve deterministik deney ortamı. Tüm Atlas kayıtları sentetiktir. API anahtarı, kullanıcı hesabı, backend, gerçek model veya OCR gerekmez. Gerçek masaüstü, dosya, hesap, e-posta ya da başka sekmelere erişmez.
 
-Planlanan özel alan adı `cul.aserdargun.com`; bu alan adı henüz bağlı değildir. Azure yayını, Free Static Web Apps ve Azure tarafından üretilen adres üzerinden yapılır; ayrıntılar [dağıtım belgesinde](docs/DEPLOYMENT.md). HNS, ARL, DPL, SEC ve EVL ile ilişkiler yalnızca kavramsaldır.
+Özel alan adı [cul.aserdargun.com](https://cul.aserdargun.com), IHS DNS üzerinden Azure Free Static Web Apps uygulamasına yönlendirilir; ayrıntılar [dağıtım belgesinde](docs/DEPLOYMENT.md). HNS, ARL, DPL, SEC ve EVL ile ilişkiler yalnızca kavramsaldır.
 
 ## Çalıştırma
 

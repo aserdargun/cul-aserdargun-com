@@ -18,7 +18,9 @@ Azure-generated endpoint: [white-hill-060b8fb03.3.azurestaticapps.net](https://w
 | Deployment secret | `AZURE_STATIC_WEB_APPS_API_TOKEN_SWA_CUL_ASERDARGUN_COM`   |
 | Concurrency       | `swa-cul-aserdargun-com-production`, cancellation disabled |
 
-The generated production URL is reported by the successful Actions deployment and by `az staticwebapp show`. `cul.aserdargun.com` is a planned custom domain only; no DNS or custom-domain setup is part of this release.
+The generated production URL is reported by the successful Actions deployment and by `az staticwebapp show`. The custom domain is [cul.aserdargun.com](https://cul.aserdargun.com), configured separately through IHS DNS and the existing Azure app.
+
+IHS zone-relative records: `cul` CNAME points to `white-hill-060b8fb03.3.azurestaticapps.net`; `_dnsauth.cul` TXT holds the Azure ownership token. Never commit the token. Domain completion requires matching records from both authoritative nameservers, Azure `Validated`, a matching TLS certificate, HTTPS release verification and a browser check.
 
 ## Release pipeline
 
