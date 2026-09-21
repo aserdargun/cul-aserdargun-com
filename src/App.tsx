@@ -12,7 +12,9 @@ import { Player } from './components/Player';
 import { Comparison } from './components/Comparison';
 import { Method } from './components/Method';
 export default function App() {
-  const [lang, setLang] = useState<Lang>('tr');
+  const [lang, setLang] = useState<Lang>(() =>
+    new URLSearchParams(window.location.search).get('lang') === 'en' ? 'en' : 'tr',
+  );
   const [page, setPage] = useState<'lab' | 'compare' | 'method'>('lab');
   const counter = useRef(1);
   const [run, setRun] = useState(() => createRun(scenarios[0], 'coordinate'));
