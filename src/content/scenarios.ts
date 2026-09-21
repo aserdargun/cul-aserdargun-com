@@ -40,7 +40,7 @@ export const scenarios: Scenario[] = [
   [
     'uncertain',
     tx('Belirsiz sonuç', 'Uncertain outcome'),
-    tx('Bildirim yoksa yeniden tıklama', 'No receipt? Verify before retrying'),
+    tx('Yeniden denemeden önce doğrula', 'No receipt? Verify before retrying'),
     tx(
       'Kaydetme uygulanır fakat başarı bildirimi gösterilmez. Doğrulayıcı iç durumu inceler. Kör tekrar deneyi ikinci bir kayıt işlemi üretir.',
       'Saving succeeds but the receipt is suppressed. The verifier inspects internal state. The blind-retry experiment produces a second write.',

@@ -4,6 +4,7 @@ import type { Faults, Lang, ScenarioId, Strategy } from './engine/types';
 import { createRun, advance, decideApproval, intervene, terminal } from './engine/engine';
 import { scenarios } from './content/scenarios';
 import { t } from './content/i18n';
+import { portfolioUrl } from './content/ecosystem';
 import { Environment } from './components/Environment';
 import { Sidebar } from './components/Sidebar';
 import { Inspector } from './components/Inspector';
@@ -20,6 +21,14 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = lang;
     document.title = `CUL — ${lang === 'tr' ? 'Bilgisayar Kullanımı Laboratuvarı' : 'Computer Use Laboratory'}`;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute(
+        'content',
+        lang === 'tr'
+          ? 'CUL — aserdargun.com öğrenme sisteminde HNS ailesinin bilgisayar kullanımı laboratuvarı. Altı sentetik senaryoda hedefleme, onay ve sonuç doğrulama; gerçek model veya masaüstü erişimi yoktur.'
+          : 'CUL — the HNS family’s computer use laboratory in the aserdargun.com learning system. Targeting, approval and outcome verification in six synthetic scenarios; no live model or desktop access.',
+      );
   }, [lang]);
   useEffect(() => {
     if (!playing || terminal(run.status) || run.status === 'awaiting-approval') {
@@ -188,7 +197,9 @@ export default function App() {
         </span>
         <p>{t('boundary', lang)}</p>
         <small>
-          HNS / {lang === 'tr' ? 'Araştırma laboratuvarı' : 'Research laboratory'} · v1.0
+          <a href={portfolioUrl(lang)} target="_blank" rel="noreferrer">
+            aserdargun.com · {t('portfolio', lang)} <ArrowUpRight size={14} aria-hidden />
+          </a>
         </small>
       </footer>
     </>

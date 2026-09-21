@@ -17,7 +17,7 @@ assert.equal(release.application, 'CUL');
 assert.equal(release.commit, expected, 'Live release SHA does not match the pushed commit.');
 const { response, body } = await read('/');
 assert(response.headers.get('content-type')?.includes('text/html'));
-assert(body.includes('CUL — Computer Use Laboratory'));
+assert(body.includes('<title>CUL — Bilgisayar Kullanımı Laboratuvarı</title>'));
 assert(response.headers.get('x-content-type-options') === 'nosniff');
 assert(response.headers.get('content-security-policy')?.includes("script-src 'self'"));
 const assets = [...body.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g)].map((m) => m[1]);

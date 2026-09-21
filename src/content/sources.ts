@@ -3,7 +3,7 @@ export const sources = [
     title: 'Computer use tool',
     publisher: 'Anthropic',
     url: 'https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool',
-    accessed: '2026-09-20',
+    accessed: '2026-09-21',
     published: null,
     note: {
       tr: 'Ekran gözlemi ve eylem araçlarının döngüsü; güvenilmeyen içerik riskleri. CUL bu aracı veya bir Claude modelini çalıştırmaz.',
@@ -14,7 +14,7 @@ export const sources = [
     title: 'Locators',
     publisher: 'Microsoft / Playwright',
     url: 'https://playwright.dev/docs/locators',
-    accessed: '2026-09-20',
+    accessed: '2026-09-21',
     published: null,
     note: {
       tr: 'Rol, ad, etiket ve bağlamla öğe bulma; tekil eşleşme. CUL politikası bundan esinlenen ayrı bir sentetik modeldir.',
@@ -25,7 +25,7 @@ export const sources = [
     title: 'Auto-waiting',
     publisher: 'Microsoft / Playwright',
     url: 'https://playwright.dev/docs/actionability',
-    accessed: '2026-09-20',
+    accessed: '2026-09-21',
     published: null,
     note: {
       tr: 'Görünürlük, kararlılık, etkinlik ve olay alabilirlik denetimleri. CUL sentetik adım bütçesi kullanır; gerçek süre ölçmez.',

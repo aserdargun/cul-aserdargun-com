@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 const html = readFileSync('dist/index.html', 'utf8');
-assert(html.includes('CUL — Computer Use Laboratory'), 'Missing CUL page identity.');
+assert(
+  html.includes('<title>CUL — Bilgisayar Kullanımı Laboratuvarı</title>'),
+  'Missing CUL page identity.',
+);
 assert(!html.includes('/src/main.tsx'), 'Unbuilt source entry found.');
 const assets = [...html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g)].map((m) => m[1]);
 assert(

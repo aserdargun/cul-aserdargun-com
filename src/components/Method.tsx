@@ -2,6 +2,7 @@ import { ArrowRight, BookOpen, ExternalLink } from 'lucide-react';
 import type { Lang, ScenarioId } from '../engine/types';
 import { t } from '../content/i18n';
 import { sources } from '../content/sources';
+import { ecosystem, portfolioUrl } from '../content/ecosystem';
 const lessons: [ScenarioId, string, string, string, string][] = [
   [
     'shift',
@@ -65,10 +66,20 @@ export function Method({ lang, onOpen }: { lang: Lang; onOpen: (id: ScenarioId) 
       <section className="cycle panel">
         <h2>{t('loop', lang)}</h2>
         <div className="cycle-nodes">
-          {(['task', 'observation', 'target', 'action', 'verification'] as const).map((k, i) => (
+          {(
+            [
+              'task',
+              'observation',
+              'target',
+              'preconditionsTitle',
+              'action',
+              'freshObservation',
+              'verification',
+            ] as const
+          ).map((k, i) => (
             <div key={k}>
               <span>{t(k, lang)}</span>
-              {i < 4 && <ArrowRight aria-hidden size={20} />}
+              {i < 6 && <ArrowRight aria-hidden size={20} />}
             </div>
           ))}
         </div>
@@ -90,6 +101,12 @@ export function Method({ lang, onOpen }: { lang: Lang; onOpen: (id: ScenarioId) 
           </article>
         ))}
       </div>
+      <section className="reading-guide panel">
+        <h2>{t('experimentLimits', lang)}</h2>
+        <p>{t('experimentLimitsText', lang)}</p>
+        <h2>{t('sessionData', lang)}</h2>
+        <p>{t('sessionDataText', lang)}</p>
+      </section>
       <section className="sources">
         <h2>{t('sources', lang)}</h2>
         {sources.map((s) => (
@@ -108,7 +125,20 @@ export function Method({ lang, onOpen }: { lang: Lang; onOpen: (id: ScenarioId) 
       <section className="ecosystem">
         <h2>{t('ecosystem', lang)}</h2>
         <p>{t('ecosystemText', lang)}</p>
-        <p>{t('domain', lang)}</p>
+        <div className="ecosystem-links">
+          {ecosystem.map((app) => (
+            <article key={app.code}>
+              <a href={app.url} target="_blank" rel="noreferrer">
+                <strong>{app.code}</strong> · {app.title[lang]}{' '}
+                <ExternalLink size={15} aria-hidden />
+              </a>
+              <p>{app.purpose[lang]}</p>
+            </article>
+          ))}
+        </div>
+        <a href={portfolioUrl(lang)} target="_blank" rel="noreferrer">
+          {t('portfolio', lang)} · aserdargun.com <ExternalLink size={15} aria-hidden />
+        </a>
       </section>
     </main>
   );

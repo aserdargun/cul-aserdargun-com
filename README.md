@@ -4,7 +4,13 @@
 
 Bilgisayar Kullanımı Laboratuvarı: React + TypeScript ile TR/EN, tarayıcı içinde çalışan kontrollü ve deterministik deney ortamı. Tüm Atlas kayıtları sentetiktir. API anahtarı, kullanıcı hesabı, backend, gerçek model veya OCR gerekmez. Gerçek masaüstü, dosya, hesap, e-posta ya da başka sekmelere erişmez.
 
-Özel alan adı [cul.aserdargun.com](https://cul.aserdargun.com), IHS DNS üzerinden Azure Free Static Web Apps uygulamasına yönlendirilir; ayrıntılar [dağıtım belgesinde](docs/DEPLOYMENT.md). HNS, ARL, DPL, SEC ve EVL ile ilişkiler yalnızca kavramsaldır.
+Özel alan adı [cul.aserdargun.com](https://cul.aserdargun.com), IHS DNS üzerinden Azure Free Static Web Apps uygulamasına yönlendirilir; ayrıntılar [dağıtım belgesinde](docs/DEPLOYMENT.md).
+
+## aserdargun.com öğrenme sistemindeki yeri
+
+CUL, [aserdargun.com](https://aserdargun.com/tr/) öğrenme sisteminde [HNS](https://hns.aserdargun.com/) araştırma ailesinin bilgisayar kullanımı laboratuvarıdır. [ARL](https://arl.aserdargun.com/) daha geniş ajan yürütme döngüsünü, [DPL](https://dpl.aserdargun.com/) eylem öncesi karar yönlendirmesini, [SEC](https://sec.aserdargun.com/) yetki ve güven sınırlarını, [EVL](https://evl.aserdargun.com/) değerlendirme ve kanıt ölçütlerini tamamlar. Yöntem ekranı her uygulamanın ilişkisini TR/EN açıklar ve doğrudan bağlantı sunar; altbilgi dil seçimine uygun ana portföy sayfasına döner.
+
+Bu ilişkiler kavramsaldır. Bağlantılar koşu, onay veya veri aktarmaz; servis entegrasyonu yoktur. CUL’ün ana portföydeki kaydı `aserdargun-com/data/system-focus.json` üzerinden üretilir; sentetik simülasyon sınırı iki dilde belirtilir.
 
 ## Çalıştırma
 
@@ -39,6 +45,8 @@ Fontlar yerel pakete dahildir. Ürün çalışırken dış ağ isteğine ihtiya�
 6. **Karşılaştırma** aynı senaryoyu, başlangıç durumunu ve hata ayarlarını iki stratejide yürütür. Onaylar otomatik verilmez.
 7. Olay kartına tıklamak yalnız kayıtlı gözlem ve eylemi inceler. Ortam geçmişe döndürülmez, eylemler tekrar uygulanmaz.
 8. **JSON indir** koşunun başlangıç durumunu, koşullarını, olaylarını ve sonucunu `schemaVersion: "1.0"` ile dışa aktarır.
+
+Hata koşulları bir sonraki seçilen senaryoya taşınır. **Kalıcı engel** yalnızca **Engellenmiş etkileşim** senaryosunda, senaryonun hata koşulu açıkken etkilidir. **Eksik not etiketi** düzenleme görevlerinde hedeflemeyi engeller; arşivleme not alanını hedeflemez. Yeni deney veya ayar değişikliği mevcut koşuyu sıfırlar; korumak istediğiniz koşuyu önce dışa aktarın.
 
 ## Altı senaryo
 

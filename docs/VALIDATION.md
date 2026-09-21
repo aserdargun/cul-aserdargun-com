@@ -74,4 +74,4 @@ npm start
 - No real model, screenshot understanding, OCR, desktop control, external accounts or field integrations.
 - Coordinate observations are a synthetic scene model; verifications use labelled internal state.
 - Session data is memory-only. Exports are downloadable but not imported or persisted automatically.
-- This earlier local-validation run did not include production publication or domain verification. The subsequent Azure release workflow is documented in [DEPLOYMENT.md](DEPLOYMENT.md). The custom domain remains a plan, and no neighbouring repositories were changed.
+- This earlier local-validation run did not include production publication or domain verification, and no neighbouring repositories were changed in that run. The subsequent Azure release workflow and custom-domain configuration are documented in [DEPLOYMENT.md](DEPLOYMENT.md). This dated record is not verification of a later release.

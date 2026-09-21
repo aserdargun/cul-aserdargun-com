@@ -9,7 +9,7 @@
 - `engine/engine.ts`: deterministic transitions and actuator; validates current surface, uniqueness, visibility, enabled/overlay state, scope, observation binding and approval. The coordinate actuator hit-tests the logical point; the semantic actuator resolves the descriptor against the current surface.
 - `engine/verifier.ts`: internal environment-state evidence, separately labelled from observed screen evidence. Selection, draft and final persisted state are distinct checks.
 - `components/`: lab panels, functioning environment, comparison, read-only trace inspection and Methods.
-- `content/`: scenarios, full TR/EN labels/explanations and source provenance.
+- `content/`: scenarios, full TR/EN labels/explanations, source provenance and conceptual portfolio links in `ecosystem.ts`.
 
 The synthetic observation includes modeled offscreen elements with `visible: false`, allowing the policy to request bounded scrolling. This is intentionally a scene-model teaching aid, not screenshot parsing or a claim of actual computer vision. The same model defines rendered element bounds and the actuator's hit testing. Actual responsive DOM alignment is tested separately in Chromium.
 
@@ -43,4 +43,6 @@ User data is synthetic. Canonical task labels and stable field keys never change
 
 `schemaVersion: "1.0"` exports the complete ExperimentRun: scenario definition, public goal, strategy, fault configuration, initial environment, current environment, events, observations, proposals, action results, verification and approval. `exportNote` describes synthetic provenance. `schemas/experiment-run.schema.json` gives the top-level contract; TypeScript is the detailed in-process contract.
 
-`npm run build` emits static `dist/`, with bundled fonts and no runtime external dependencies. The GitHub Actions workflow validates and deploys this static artifact to a Free Azure Static Web App, then verifies the live commit and browser flows. There are no DNS edits, integrations with neighbouring projects, telemetry, storage backend or external account access. See DEPLOYMENT.md.
+`npm run build` emits static `dist/`, with bundled fonts and no runtime external dependencies. The GitHub Actions workflow validates and deploys this static artifact to a Free Azure Static Web App, then verifies the live commit and browser flows. Runtime code performs no DNS edits, integrations with neighbouring projects, telemetry, storage backend or external account access. The custom-domain configuration is documented in DEPLOYMENT.md.
+
+CUL belongs to the HNS research family in the aserdargun.com learning system. Methods links to HNS, ARL, DPL, SEC and EVL explain conceptual relationships; these are ordinary navigation links, with no run, approval or data transfer. The footer and Methods return to `/tr/` on the root site for Turkish and `/` for English. The root site's `data/system-focus.json` owns CUL's homepage entry; generated root HTML must be updated through that repository's generator.

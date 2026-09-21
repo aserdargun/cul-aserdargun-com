@@ -71,6 +71,7 @@ export function Sidebar({
               {t((['enabled', 'permanent', 'missingLabel'] as const)[i], lang)}
             </label>
           ))}
+          <p className="fault-help">{t('faultHelp', lang)}</p>
         </details>
       </div>
     </aside>
