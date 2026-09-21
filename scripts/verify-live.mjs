@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { waitForRelease } from './wait-for-release.mjs';
 const base = new URL(process.env.CUL_BASE_URL || process.argv[2]);
 const expected = process.env.EXPECTED_COMMIT || process.argv[3];
 assert(base.protocol === 'https:', 'Production checks require HTTPS.');
@@ -9,12 +10,12 @@ async function read(path) {
   assert.equal(response.status, 200, `${path}: HTTP ${response.status}`);
   return { response, body };
 }
-const { response: releaseResponse, body: releaseBody } = await read('/release.json');
-assert(releaseResponse.headers.get('content-type')?.includes('application/json'));
-assert(releaseResponse.headers.get('cache-control')?.includes('no-store'));
-const release = JSON.parse(releaseBody);
-assert.equal(release.application, 'CUL');
-assert.equal(release.commit, expected, 'Live release SHA does not match the pushed commit.');
+const release = await waitForRelease(async () => {
+  const { response: releaseResponse, body: releaseBody } = await read('/release.json');
+  assert(releaseResponse.headers.get('content-type')?.includes('application/json'));
+  assert(releaseResponse.headers.get('cache-control')?.includes('no-store'));
+  return JSON.parse(releaseBody);
+}, expected);
 const { response, body } = await read('/');
 assert(response.headers.get('content-type')?.includes('text/html'));
 assert(body.includes('<title>CUL — Bilgisayar Kullanımı Laboratuvarı</title>'));

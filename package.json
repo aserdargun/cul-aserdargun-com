@@ -9,7 +9,7 @@
     "stop": "node scripts/server.mjs stop",
     "build": "tsc -b && vite build && node scripts/write-release.mjs && node scripts/verify-dist.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 8037 --strictPort",
-    "test": "vitest run",
+    "test": "vitest run && node --test scripts/wait-for-release.test.mjs",
     "test:ui": "playwright test",
     "validate": "npm run build && npm test && npm run test:ui",
     "verify:live": "node scripts/verify-live.mjs"

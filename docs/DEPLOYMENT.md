@@ -27,9 +27,9 @@ IHS zone-relative records: `cul` CNAME points to `white-hill-060b8fb03.3.azurest
 Pushes to `main` and manual dispatch run the same single workflow:
 
 1. Check out the exact commit and install locked dependencies on Node.js 22.
-2. Install Chromium and run TypeScript/build checks, artifact verification, 27 domain tests and the complete 24-case browser suite against the built static preview.
+2. Install Chromium and run TypeScript/build checks, artifact verification, 27 domain tests, 5 release-propagation checks and the complete 24-case browser suite against the built static preview.
 3. Upload the already verified `dist/` to the Free app. Both app and API rebuilding are disabled; there is no backend.
-4. Check the live `release.json` commit against the workflow SHA, plus root HTML, referenced JS/CSS, content types, security headers and cache policy.
+4. Check the live `release.json` commit against the workflow SHA, plus root HTML, referenced JS/CSS, content types, security headers and cache policy. If a valid CUL manifest still reports the previous commit immediately after upload, retry at five-second intervals for at most 13 reads (one minute of waiting, plus request time). A persistent mismatch, invalid metadata or response-validation error fails the release; an old commit is never accepted.
 5. Run the same complete browser suite against the generated HTTPS production URL.
 
 Official actions are pinned to immutable commits, resolved from their official repositories when configuring this release. Workflow permissions are `contents: read`; no GitHub source integration or PR-comment token is required by Azure.

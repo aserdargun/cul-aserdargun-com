@@ -28,7 +28,7 @@ Yerel önizleme: http://127.0.0.1:8036
 - `npm run dev`: ön planda geliştirme; `Ctrl+C` ile durur.
 - `npm run build`: TypeScript kontrolü ve `dist/` statik dağıtımı.
 - `npm run preview`: derlenmiş uygulama, http://127.0.0.1:8037; `Ctrl+C` ile durur.
-- `npm test`: tipli motorun alan testleri.
+- `npm test`: tipli motorun alan testleri ve yayın sonrası sürüm doğrulama testleri.
 - `npm run test:ui`: Chromium ile gerçek arayüz testleri. İlk kurulumda gerekirse `npx playwright install chromium`.
 - `CUL_PREVIEW=1 npx playwright test -g 'Kararlı arayüz /'`: derlenmiş dağıtımda iki stratejinin temel akışı.
 - `npm run validate`: derleme + alan testleri + tarayıcı testleri. 8036'da bu proje çalışmıyorsa testi başlatmadan portu değiştirin; yabancı servisi kapatmayın.
