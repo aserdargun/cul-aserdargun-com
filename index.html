@@ -10,10 +10,46 @@
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href="https://cul.aserdargun.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CUL — Computer Use Laboratory" />
+    <meta
+      property="og:description"
+      content="Observe, act, verify: synthetic computer-use scenarios that keep targeting, approval and result checking inside one controlled browser environment."
+    />
+    <meta property="og:url" content="https://cul.aserdargun.com/" />
+    <meta property="og:site_name" content="aserdargun.com" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="CUL — Computer Use Laboratory" />
+    <meta
+      name="twitter:description"
+      content="Observe, act, verify: synthetic computer-use scenarios that keep targeting, approval and result checking inside one controlled browser environment."
+    />
     <title>CUL — Bilgisayar Kullanımı Laboratuvarı</title>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div lang="en">
+        <h1>CUL — Computer Use Laboratory</h1>
+        <p>
+          Synthetic computer-use scenarios in one controlled browser
+          environment. The loop is observe, act, verify: targeting, approval and
+          result checking stay inside the same bounded run. There is no live
+          model and no access to a real desktop.
+        </p>
+        <ul>
+          <li>Six scenarios: stable interface, shifting layout, ambiguous target, blocked interaction, uncertain outcome and an approval boundary.</li>
+          <li>Coordinate targeting and semantic targeting, compared side by side.</li>
+          <li>Single-use approval bound to the exact target and content.</li>
+          <li>Separate observed evidence and internal verifier state.</li>
+          <li>A read-only run trace and a Methods page with sources.</li>
+        </ul>
+        <p>
+          This interactive laboratory needs JavaScript. Its environments and
+          records are synthetic teaching fixtures, not observed computer use.
+        </p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
