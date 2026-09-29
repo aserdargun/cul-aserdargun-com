@@ -13,7 +13,7 @@ import { Comparison } from './components/Comparison';
 import { Method } from './components/Method';
 export default function App() {
   const [lang, setLang] = useState<Lang>(() =>
-    new URLSearchParams(window.location.search).get('lang') === 'en' ? 'en' : 'tr',
+    new URLSearchParams(window.location.search).get('lang') === 'tr' ? 'tr' : 'en',
   );
   const [page, setPage] = useState<'lab' | 'compare' | 'method'>('lab');
   const counter = useRef(1);

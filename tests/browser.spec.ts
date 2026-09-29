@@ -23,7 +23,7 @@ async function steps(page: Page, n: number) {
     await page.getByRole('button', { name: 'Adımla', exact: true }).click();
 }
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?lang=tr');
   await expect(page.getByRole('heading', { name: 'Gözlemle. Eyleme geç. Doğrula.' })).toBeVisible();
 });
 for (const strategy of ['Koordinat', 'Anlamsal'])
