@@ -21,6 +21,8 @@ export default defineConfig({
     : {
         command: preview ? 'npm run preview' : 'npm run dev',
         url: baseURL,
-        reuseExistingServer: !preview,
+        // A server left by another checkout would silently serve stale code and
+        // the suite would pass against the wrong build. Fail loudly instead.
+        reuseExistingServer: false,
       },
 });
