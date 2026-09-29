@@ -31,7 +31,7 @@ export function selectTarget(
   const role = operation === 'fill' ? 'textbox' : 'button';
   const items =
     o.coordinate?.map((x) => ({ ...x, name: x.text, role: undefined })) ?? o.semantic ?? [];
-  let matches = items.filter(
+  const matches = items.filter(
     (x) =>
       x.name === name &&
       (!('role' in x) || !x.role || x.role === role) &&

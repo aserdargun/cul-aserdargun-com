@@ -151,8 +151,8 @@ describe('bound single-use approval', () => {
     expect(r.environment.records.every((x) => !x.archived)).toBe(true);
   });
   it('approval from another run is not valid', () => {
-    let a = decideApproval(runToEnd(make('approval', 'semantic')), true);
-    let b = runToEnd(createRun(scenarios[5], 'semantic', 'another'));
+    const a = decideApproval(runToEnd(make('approval', 'semantic')), true);
+    const b = runToEnd(createRun(scenarios[5], 'semantic', 'another'));
     b.approval = a.approval;
     expect(execute(b, b.proposal!).code).toBe('approval-invalid');
   });
