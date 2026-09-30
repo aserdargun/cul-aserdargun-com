@@ -18,7 +18,7 @@ const release = await waitForRelease(async () => {
 }, expected);
 const { response, body } = await read('/');
 assert(response.headers.get('content-type')?.includes('text/html'));
-assert(body.includes('<title>CUL — Bilgisayar Kullanımı Laboratuvarı</title>'));
+assert(body.includes('<title>CUL — Computer Use Laboratory</title>'));
 assert(response.headers.get('x-content-type-options') === 'nosniff');
 assert(response.headers.get('content-security-policy')?.includes("script-src 'self'"));
 const assets = [...body.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g)].map((m) => m[1]);
