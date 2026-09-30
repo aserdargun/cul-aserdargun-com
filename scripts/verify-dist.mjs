@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 const html = readFileSync('dist/index.html', 'utf8');
 assert(
-  html.includes('<title>CUL — Bilgisayar Kullanımı Laboratuvarı</title>'),
+  html.includes('<title>CUL — Computer Use Laboratory</title>'),
   'Missing CUL page identity.',
 );
 assert(!html.includes('/src/main.tsx'), 'Unbuilt source entry found.');
