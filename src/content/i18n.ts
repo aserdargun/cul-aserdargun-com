@@ -213,6 +213,7 @@ const words = {
   replay: ['Olayı incele', 'Inspect event'],
   scrolled: ['Liste kaydırıldı', 'List scrolled'],
   unknown: ['Bilinmiyor', 'Unknown'],
+  frame: ['Mantıksal çerçeve', 'Logical frame'],
   logicalHint: [
     'Koordinatlar bu sabit mantıksal çerçeveye aittir. Küçük ekranda ortamı yatay kaydırın.',
     'Coordinates belong to this fixed logical frame. Scroll the environment horizontally on small screens.',

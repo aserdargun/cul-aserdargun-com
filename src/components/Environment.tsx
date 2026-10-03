@@ -70,8 +70,10 @@ export function Environment({
       <div
         className="environment-scroll"
         ref={frame}
+        role="group"
         tabIndex={0}
-        aria-label={t('logicalHint', lang)}
+        aria-label={t('frame', lang)}
+        aria-describedby="environment-hint"
       >
         <div style={{ width: 640 * zoom, height: 480 * zoom }}>
           <div className="stage" style={{ transform: `scale(${zoom})` }} data-testid="stage">
@@ -132,6 +134,7 @@ export function Environment({
                     const scroll = Math.round(x.currentTarget.scrollTop);
                     if (scroll !== e.scroll) onMutate({ type: 'scroll', value: scroll });
                   }}
+                  role="group"
                   tabIndex={0}
                   aria-label={t('records', lang)}
                 >
@@ -304,7 +307,9 @@ export function Environment({
           </select>
         </label>
       </div>
-      <p className="environment-hint">{t('logicalHint', lang)}</p>
+      <p className="environment-hint" id="environment-hint">
+        {t('logicalHint', lang)}
+      </p>
       {run.scenario.id === 'uncertain' && run.status === 'completed' && (
         <div className="blind-box">
           <button onClick={() => onMutate({ type: 'blind-repeat' })}>{t('blind', lang)}</button>

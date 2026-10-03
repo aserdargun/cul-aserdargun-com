@@ -72,6 +72,22 @@ for (const strategy of ['Koordinat', 'Anlamsal'])
       }
       expect(errors).toEqual([]);
     });
+test('focusable scroll regions expose a role and a localized name', async ({ page }) => {
+  await expect(page.getByRole('group', { name: 'Mantıksal çerçeve' })).toHaveAttribute(
+    'class',
+    'environment-scroll',
+  );
+  await expect(page.getByRole('group', { name: 'Kayıtlar' })).toHaveAttribute(
+    'class',
+    'record-list',
+  );
+  await expect(page.locator('.environment-scroll')).toHaveAccessibleDescription(
+    'Koordinatlar bu sabit mantıksal çerçeveye aittir. Küçük ekranda ortamı yatay kaydırın.',
+  );
+  await page.getByRole('button', { name: 'EN', exact: true }).click();
+  await expect(page.getByRole('group', { name: 'Logical frame' })).toBeVisible();
+  await expect(page.getByRole('group', { name: 'Records' })).toBeVisible();
+});
 test('start, pause, reset, step and inspect history without applying actions', async ({ page }) => {
   await page.getByRole('button', { name: 'İlk deneyi başlat' }).click();
   await page.getByRole('button', { name: 'Duraklat', exact: true }).click();

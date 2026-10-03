@@ -108,7 +108,7 @@ export function Player({
           </button>
         </div>
       </div>
-      <div className="loop-compact" aria-label={t('loopText', lang)}>
+      <div className="loop-compact" role="group" aria-label={t('loopText', lang)}>
         {[
           [Eye, 'observation'],
           [MousePointer2, 'target'],
