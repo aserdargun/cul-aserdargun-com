@@ -3,7 +3,11 @@ import type { Lang, ScenarioId } from '../engine/types';
 import { t } from '../content/i18n';
 import { sources } from '../content/sources';
 import { ecosystem, portfolioUrl } from '../content/ecosystem';
-const lessons: [ScenarioId, string, string, string, string][] = [
+/* Exported so the published prose can be checked against the engine policy it
+   describes: the "3 retries and 64 steps" sentence is a claim about
+   recovery.maxRetries / recovery.maxSteps, so engine.test.ts binds the numbers
+   the reader sees to the numbers the engine enforces. */
+export const lessons: [ScenarioId, string, string, string, string][] = [
   [
     'shift',
     'Gözlem neden eskir?',

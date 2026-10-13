@@ -8,8 +8,10 @@ import {
   intervene,
   metrics,
   replay,
+  terminal,
 } from '../src/engine/engine';
 import { scenarios } from '../src/content/scenarios';
+import { lessons } from '../src/components/Method';
 import { observe } from '../src/engine/observation';
 import { selectTarget } from '../src/engine/strategies';
 import type { ExperimentRun, ScenarioId, Strategy } from '../src/engine/types';
@@ -111,6 +113,53 @@ describe('complete deterministic experiments', () => {
     expect(
       selectTarget(s, scenarios[0].goal, 0, false, 'b').proposal?.target.point,
     ).toBeUndefined();
+  });
+  it('step budget hands off instead of running forever, and it is the budget the panel publishes', () => {
+    /* docs/ARCHITECTURE.md publishes the budget as the contract:
+     *
+     *   "Failure -> Recovering -> Observing, up to 3 retries; persistent failure
+     *    -> Handed off. Total budget: 64 synthetic steps."
+     *
+     * and the Methods panel repeats those same two numbers to the reader in
+     * both locales ("En fazla 3 yeniden deneme ve 64 adim" / "At most 3 retries
+     * and 64 steps"), while the Player renders recovery.maxSteps live as the
+     * denominator beside the step counter.
+     *
+     * The guard is three lines in engine.ts, and no scenario legitimately burns
+     * 64 steps: the retry budget always hands off first. So deleting the guard,
+     * turning `>` into `>=`, or editing 64 in scenarios.ts would change nothing
+     * any other test observes - the step budget is a safety net no scenario
+     * reaches, which is exactly why it needs its own test. A one-step budget
+     * makes the boundary reachable: the first advance is inside it, the second
+     * is one past it.
+     */
+    const budget = scenarios[0].recovery;
+    const inside = { ...scenarios[0], recovery: { ...budget, maxSteps: 1 } };
+    const first = advance(createRun(inside, 'coordinate', 'budget-1'));
+    expect(first.steps).toBe(1);
+    expect(terminal(first.status), 'one step is still inside the budget').toBe(false);
+
+    const over = advance(first);
+    expect(over.steps).toBe(2);
+    expect(over.status).toBe('handed-off');
+    expect(over.events.at(-1)?.code).toBe('step-budget');
+    expect(terminal(over.status), 'exhaustion stops the run, it does not flag it').toBe(true);
+    /* Exhaustion is terminal, so no further action may be produced after it. */
+    expect(over.environment.records[0].commits).toBe(0);
+
+    /* The sentence the reader sees must state the policy the engine runs, so
+     * compare the integers in the prose against the enforced budget rather than
+     * pinning wording: rewording stays free, a changed number does not. */
+    const [, , , tr, en] = lessons.find(([id]) => id === 'blocked')!;
+    const numbers = (s: string) =>
+      [...s.matchAll(/\d+/g)]
+        .map((m) => Number(m[0]))
+        .sort((a, b) => a - b);
+    const enforced = [budget.maxRetries, budget.maxSteps].sort((a, b) => a - b);
+    expect(numbers(tr), 'Turkish panel copy vs enforced budget').toEqual(enforced);
+    expect(numbers(en), 'English panel copy vs enforced budget').toEqual(enforced);
+    /* Every scenario the reader can pick carries the same budget the copy claims. */
+    for (const s of scenarios) expect(s.recovery).toEqual(budget);
   });
 });
 describe('bound single-use approval', () => {
