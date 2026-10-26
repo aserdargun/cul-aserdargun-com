@@ -19,6 +19,11 @@ import type {
   Strategy,
 } from './types';
 export const terminal = (s: Status) => ['completed', 'failed', 'blocked', 'handed-off'].includes(s);
+/* How many retries the Save button stays disabled in the "blocked" scenario.
+   The scenario lesson and the "available" event publish this number to the
+   reader, so the engine keeps it in one named place and a test binds the
+   prose to it — the way the step budget is bound to the Methods panel. */
+export const DISABLED_RETRIES = 2;
 export function createRun(
   scenario: Scenario,
   strategy: Strategy,
@@ -291,7 +296,7 @@ export function advance(input: ExperimentRun, runId = input.id): ExperimentRun {
   if (
     (r.status as Status) === 'recovering' &&
     r.scenario.id === 'blocked' &&
-    r.retries >= 2 &&
+    r.retries >= DISABLED_RETRIES &&
     !r.faults.permanentBlock &&
     r.environment.disabled
   ) {

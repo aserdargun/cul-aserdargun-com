@@ -9,9 +9,11 @@ import {
   metrics,
   replay,
   terminal,
+  DISABLED_RETRIES,
 } from '../src/engine/engine';
 import { scenarios } from '../src/content/scenarios';
 import { lessons } from '../src/components/Method';
+import { eventText } from '../src/content/i18n';
 import { observe } from '../src/engine/observation';
 import { selectTarget } from '../src/engine/strategies';
 import type { ExperimentRun, ScenarioId, Strategy } from '../src/engine/types';
@@ -160,6 +162,58 @@ describe('complete deterministic experiments', () => {
     expect(numbers(en), 'English panel copy vs enforced budget').toEqual(enforced);
     /* Every scenario the reader can pick carries the same budget the copy claims. */
     for (const s of scenarios) expect(s.recovery).toEqual(budget);
+  });
+
+  it('the disabled window the reader is promised is the window the engine runs', () => {
+    /* The blocked scenario publishes how long Save stays disabled: the lesson
+       on the scenario card, and the "available" event the reader sees when the
+       button comes back. The engine held that window as a bare literal, so
+       nothing connected the prose to it — changing the number in the engine
+       left the published claim wrong and every test green. The step budget got
+       this guard; this number did not. */
+    const blocked = scenarios.find((s) => s.id === 'blocked')!;
+    const numberWords: Record<string, number> = {
+      bir: 1, one: 1, iki: 2, two: 2, üç: 3, three: 3, dört: 4, four: 4,
+      beş: 5, five: 5, altı: 6, six: 6, yedi: 7, seven: 7, sekiz: 8, eight: 8,
+      dokuz: 9, nine: 9, on: 10, ten: 10,
+    };
+    /* The prose spells small numbers out, so the binding has to read words as
+       well as digits: rewording stays free, a changed number does not.
+       "İ" lowercases to two characters, so it is folded to a plain "i"
+       before the text is tokenised. */
+    const numbers = (s: string) =>
+      (s.replace(/İ/g, 'i').toLowerCase().match(/\d+|[a-zçğıöşü]+/g) ?? [])
+        .map((token) => (/^\d+$/.test(token) ? Number(token) : numberWords[token]))
+        .filter((n): n is number => n !== undefined);
+
+    for (const text of [blocked.lesson.tr, blocked.lesson.en]) {
+      expect(numbers(text), 'published lesson vs enforced window').toContain(
+        DISABLED_RETRIES,
+      );
+    }
+    for (const text of [eventText.available[0], eventText.available[1]]) {
+      expect(numbers(text), 'published event text vs enforced window').toContain(
+        DISABLED_RETRIES,
+      );
+    }
+
+    /* And the engine must really keep the button disabled for exactly that
+       many retries: it comes back on the retry the prose names, not earlier. */
+    let r = createRun(blocked, 'semantic', 'disabled-window');
+    let blockedAt: number | null = null;
+    let availableAt: number | null = null;
+    for (let i = 0; i < 40 && r.status !== 'completed' && r.status !== 'handed-off'; i++) {
+      r = advance(r);
+      const code = r.events.at(-1)?.code;
+      if (code === 'disabled' && blockedAt === null) blockedAt = r.retries;
+      if (code === 'available' && availableAt === null) availableAt = r.retries;
+    }
+    expect(blockedAt, 'the block is added before any retry is spent').toBe(0);
+    expect(
+      availableAt,
+      'the button comes back on the retry the prose names',
+    ).toBe(DISABLED_RETRIES);
+    expect(r.status).toBe('completed');
   });
 });
 describe('bound single-use approval', () => {
