@@ -1,6 +1,10 @@
-import type { Scenario, Text } from '../engine/types';
+import type { Scenario, ScenarioId, Text } from '../engine/types';
 const tx = (tr: string, en: string): Text => ({ tr, en });
-export const scenarios: Scenario[] = [
+
+/* The scenario catalogue is written as a plain tuple list, so the id is
+ * typed here — the lesson condition is looked up by it. */
+type ScenarioSeed = [ScenarioId, Text, Text, Text];
+const seeds: ScenarioSeed[] = [
   [
     'stable',
     tx('Kararlı arayüz', 'Stable interface'),
@@ -55,13 +59,62 @@ export const scenarios: Scenario[] = [
       'Archive Orbit notes. An untrusted description asks to delete all records and bypass approval; this is blocked. Archiving requires a single-use approval bound to its content.',
     ),
   ],
-].map(
+];
+
+/* Each of these lessons describes a failure the engine only produces while the
+ * scenario's fault is applied. The reader can switch that fault off in the
+ * panel, and the run then completes without ever reversing the list, without
+ * suppressing the receipt, without disabling the button and without the
+ * scope escalation. The lesson names the condition it depends on, and the
+ * page says so when the condition does not hold — so the text never claims
+ * something the run in front of the reader did not do. */
+const conditions: Partial<
+  Record<ScenarioId, NonNullable<Scenario['lessonCondition']>>
+> = {
+  shift: {
+    event: 'layout-changed',
+    absent: tx(
+      'Hata koşulu kapalı olduğu için liste bu çalışmada ters çevrilmedi; yerleşim sabit kaldı ve koordinat stratejisi ilk gözlemde doğrudan uyguladı.',
+      'Because the fault is off, the list did not reverse in this run; the layout stayed stable and the coordinate strategy applied on the first observation.',
+    ),
+  },
+  ambiguous: {
+    event: 'ambiguous',
+    absent: tx(
+      'Hata koşulu kapalı olduğu için bu çalışmada iki eşleşme oluşmadı; hedef tek kayıtta bulundu ve bağlam daraltması gerekmedi.',
+      'Because the fault is off, no two matches arose in this run; the target was found in a single record and no context narrowing was needed.',
+    ),
+  },
+  blocked: {
+    event: 'disabled',
+    absent: tx(
+      'Hata koşulu kapalı olduğu için kaydet düğmesi bu çalışmada devre dışı kalmadı; deneme bütçesi hiç kullanılmadı.',
+      'Because the fault is off, the save button was never disabled in this run; the retry budget was never used.',
+    ),
+  },
+  uncertain: {
+    event: 'receipt-missing',
+    absent: tx(
+      'Hata koşulu kapalı olduğu için başarı bildirimi bu çalışmada gizlenmedi; her yazma onayı döndü ve kör tekrar deneyi oluşmadı.',
+      'Because the fault is off, the receipt was not suppressed in this run; every write returned confirmation and no blind retry arose.',
+    ),
+  },
+  approval: {
+    event: 'scope-blocked',
+    absent: tx(
+      'Hata koşulu kapalı olduğu için kapsam yükseltme denemesi bu çalışmada engellenmedi; onay yalnızca arşivleme işlemi için istendi.',
+      'Because the fault is off, no scope escalation was blocked in this run; approval was requested only for the archive operation.',
+    ),
+  },
+};
+export const scenarios: Scenario[] = seeds.map(
   ([id, title, subtitle, lesson]) =>
     ({
       id,
       title,
       subtitle,
       lesson,
+      lessonCondition: conditions[id],
       goal: {
         title: 'orbit',
         group: 'astronomy',

@@ -9,6 +9,7 @@ import {
   metrics,
   replay,
   terminal,
+  lessonFor,
   DISABLED_RETRIES,
 } from '../src/engine/engine';
 import { scenarios } from '../src/content/scenarios';
@@ -214,6 +215,68 @@ describe('complete deterministic experiments', () => {
       'the button comes back on the retry the prose names',
     ).toBe(DISABLED_RETRIES);
     expect(r.status).toBe('completed');
+  });
+
+  it('a scenario lesson states only what its run actually did', () => {
+    /* Five of the six scenarios describe a failure the engine only produces
+       while the scenario's fault is applied, and the reader can switch that
+       fault off in the panel. The lesson was rendered either way, so a reader
+       who unchecked the fault read "the list reverses after the first
+       observation" above a run where the list never reversed — the text
+       described a run that had not happened.
+
+       The lesson is now bound to the event the engine emits for it. This
+       test holds that binding in place from both ends: with the fault on the
+       lesson must be the one the scenario publishes, and with the fault off
+       it must be the sentence saying what happened instead. A lesson that
+       drifted back to claiming the failure without the engine producing it
+       turns this red. */
+    for (const scenario of scenarios) {
+      const condition = scenario.lessonCondition;
+      if (!condition) continue;
+      for (const strategy of ['coordinate', 'semantic'] as const) {
+        const withFault = runToEnd(
+          createRun(scenario, strategy, `lesson-on-${strategy}`, { enabled: true }),
+        );
+        const withoutFault = runToEnd(
+          createRun(scenario, strategy, `lesson-off-${strategy}`, { enabled: false }),
+        );
+
+        expect(
+          withFault.events.some((e) => e.code === condition.event),
+          `${scenario.id}/${strategy}: the engine must produce ${condition.event} while the fault is on`,
+        ).toBe(true);
+        expect(
+          withoutFault.events.some((e) => e.code === condition.event),
+          `${scenario.id}/${strategy}: the engine must not produce ${condition.event} while the fault is off`,
+        ).toBe(false);
+
+        expect(
+          lessonFor(withFault).lesson,
+          `${scenario.id}/${strategy}: with the fault on, the published lesson stands`,
+        ).toEqual(scenario.lesson);
+        expect(
+          lessonFor(withoutFault).lesson,
+          `${scenario.id}/${strategy}: with the fault off, the lesson must say what happened instead`,
+        ).toEqual(condition.absent);
+      }
+    }
+  });
+
+  it('the lesson that replaces a failed condition is bilingual and specific', () => {
+    /* The replacement sentence is the one the reader gets when the failure
+       did not happen, so it cannot be empty, cannot be a copy of the lesson
+       it replaces, and has to exist in both languages. */
+    for (const scenario of scenarios) {
+      const condition = scenario.lessonCondition;
+      if (!condition) continue;
+      for (const lang of ['tr', 'en'] as const) {
+        expect(condition.absent[lang].trim().length, `${scenario.id}/${lang}`).toBeGreaterThan(20);
+        expect(condition.absent[lang], `${scenario.id}/${lang}`).not.toBe(
+          scenario.lesson[lang],
+        );
+      }
+    }
   });
 });
 describe('bound single-use approval', () => {

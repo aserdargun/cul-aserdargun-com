@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { MousePointer2, Play, ArrowUpRight } from 'lucide-react';
 import type { Faults, Lang, ScenarioId, Strategy } from './engine/types';
-import { createRun, advance, decideApproval, intervene, terminal } from './engine/engine';
+import { createRun, advance, decideApproval, intervene, terminal, lessonFor } from './engine/engine';
 import { scenarios } from './content/scenarios';
 import { t } from './content/i18n';
 import { portfolioUrl } from './content/ecosystem';
@@ -155,7 +155,7 @@ export default function App() {
                   <span className="micro">
                     0{scenarios.findIndex((x) => x.id === run.scenario.id) + 1} / CUL
                   </span>
-                  <p>{run.scenario.lesson[lang]}</p>
+                  <p>{lessonFor(run).lesson[lang]}</p>
                   <button
                     className="subtle"
                     onClick={() => {

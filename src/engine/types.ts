@@ -30,6 +30,18 @@ export interface Scenario {
   title: Text;
   subtitle: Text;
   lesson: Text;
+  /* What the lesson describes, and the condition the engine has to actually
+   * meet before the lesson is true. The reader can switch the scenario's
+   * fault off, and five of the six scenarios then describe something that
+   * does not happen — the list does not reverse, the receipt is not
+   * suppressed, the save button is not disabled. A lesson that kept its
+   * claim in that state was making a statement the run had not earned. */
+  lessonCondition?: {
+    /* The event the engine emits only while the condition holds. */
+    event: string;
+    /* What the engine does instead when the condition does not hold. */
+    absent: Text;
+  };
   goal: TaskGoal;
   recovery: RecoveryPolicy;
 }

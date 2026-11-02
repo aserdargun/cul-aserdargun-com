@@ -233,6 +233,32 @@ test('permanent blocker and missing label are visible handoffs', async ({ page }
   await page.getByRole('button', { name: 'Oynat', exact: true }).click();
   await expect(page.getByTestId('run-status')).toHaveText('Kullanıcıya devredildi');
 });
+test('a lesson tells the truth about the run that is on screen', async ({ page }) => {
+  /* The scenario lesson describes a failure the engine only produces while
+     the fault is applied. The reader can switch that fault off, and the
+     lesson used to stay the same — so the page claimed "the list reverses
+     after the first observation" above a run where the list never reversed.
+     The lesson is now bound to the run's own events, and the page says what
+     happened instead when the condition did not hold. */
+  const fault = page.getByRole('checkbox', { name: 'Hata koşulunu uygula' });
+  await choose(page, 1, 'Anlamsal'); // Değişen yerleşim — the list reverses
+  await page.getByText('Hata koşulları', { exact: true }).click();
+  await fault.uncheck();
+  await page.getByRole('button', { name: 'Oynat', exact: true }).click();
+  await expect(page.locator('.lesson-inline')).toContainText(
+    'liste bu çalışmada ters çevrilmedi',
+  );
+  await expect(page.locator('.lesson-inline')).not.toContainText(
+    'İlk gözlemden sonra liste ters çevrilir',
+  );
+
+  /* With the fault on, the published lesson stands. */
+  await fault.check();
+  await page.getByRole('button', { name: 'Oynat', exact: true }).click();
+  await expect(page.locator('.lesson-inline')).toContainText(
+    'İlk gözlemden sonra liste ters çevrilir',
+  );
+});
 test('keyboard editing works and cold load has no external dependency or console errors', async ({
   page,
 }) => {

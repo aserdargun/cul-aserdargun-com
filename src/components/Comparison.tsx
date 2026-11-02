@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ArrowRightLeft, Download } from 'lucide-react';
 import type { ExperimentRun, Lang, ScenarioId, Faults } from '../engine/types';
 import { scenarios } from '../content/scenarios';
-import { createRun, runToEnd, metrics, decideApproval } from '../engine/engine';
+import { createRun, runToEnd, metrics, decideApproval, lessonFor } from '../engine/engine';
 import { t, label, explain } from '../content/i18n';
 import { downloadRun } from './Player';
 export function Comparison({
@@ -53,7 +53,18 @@ export function Comparison({
           {t('runPair', lang)}
         </button>
       </div>
-      <p>{selected.lesson[lang]}</p>
+      <p>
+        {/*
+          The lesson follows the runs on this page. Before the pair is run
+          there is nothing to have earned yet, so the scenario's lesson is
+          shown; once both strategies have run, the sentence is the one the
+          runs actually justify — the pair may have been run with the fault
+          off, in which case the failure the lesson describes never happened.
+        */}
+        {pair.length
+          ? lessonFor(pair[0]).lesson[lang]
+          : selected.lesson[lang]}
+      </p>
       <p className="micro">
         {t('enabled', lang)}: {t(faults.enabled ? 'yes' : 'no', lang)} · {t('permanent', lang)}:{' '}
         {t(faults.permanentBlock ? 'yes' : 'no', lang)} · {t('missingLabel', lang)}:{' '}

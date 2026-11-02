@@ -17,6 +17,7 @@ import type {
   Scenario,
   Status,
   Strategy,
+  Text,
 } from './types';
 export const terminal = (s: Status) => ['completed', 'failed', 'blocked', 'handed-off'].includes(s);
 /* How many retries the Save button stays disabled in the "blocked" scenario.
@@ -362,6 +363,31 @@ export function metrics(r: ExperimentRun) {
     verified: r.verification?.passed && r.status === 'completed',
     duplicates: r.environment.records.some((x) => x.commits > 1 || x.archiveCount > 1),
     scopeBlocked: r.events.filter((e) => e.code === 'scope-blocked').length,
+  };
+}
+/* The lesson a run has actually earned.
+ *
+ * A scenario's lesson describes a failure — the list reverses, the receipt is
+ * suppressed, the save button is disabled, the scope escalation is blocked.
+ * The engine only produces that failure while the scenario's fault is applied,
+ * and the reader can switch the fault off in the panel. The lesson used to be
+ * rendered either way, so a reader who unchecked the fault read "the list
+ * reverses after the first observation" above a run where the list never
+ * reversed. The text was describing a run that had not happened.
+ *
+ * So the lesson is bound to the event the engine emits for it. If the run
+ * never produced that event, the lesson is replaced by the sentence saying
+ * what did happen instead. The condition is read from the run's own events
+ * rather than from the fault switch, so the page is honest about what the
+ * engine did even if a scenario gained another way to reach the same state. */
+export function lessonFor(r: ExperimentRun): { lesson: Text; held: boolean } {
+  const scenario = r.scenario;
+  const condition = scenario.lessonCondition;
+  if (!condition) return { lesson: scenario.lesson, held: true };
+  const held = r.events.some((e) => e.code === condition.event);
+  return {
+    lesson: held ? scenario.lesson : condition.absent,
+    held,
   };
 }
 export function replay(r: ExperimentRun, index: number) {
